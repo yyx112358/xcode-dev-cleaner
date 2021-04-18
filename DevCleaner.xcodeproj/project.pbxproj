@@ -29,7 +29,6 @@
 		7162E1292097624600081E4E /* Preferences.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7162E1282097624600081E4E /* Preferences.storyboard */; };
 		7162E12B209901FB00081E4E /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162E12A209901FB00081E4E /* PreferencesViewController.swift */; };
 		7162E12D209905BC00081E4E /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7162E12C209905BC00081E4E /* Preferences.swift */; };
-		7164260C20B8903000D47EF2 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7164260B20B8903000D47EF2 /* StoreKit.framework */; };
 		716667D0221A26BA004D4FC4 /* FileManager+HomeFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716667CF221A26BA004D4FC4 /* FileManager+HomeFolder.swift */; };
 		717A9F1B22DBAF9300682A0A /* OldDocumentationFileEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717A9F1A22DBAF9300682A0A /* OldDocumentationFileEntry.swift */; };
 		717AB6B620C71F4D0096743C /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717AB6B520C71F4D0096743C /* LoadingView.swift */; };
@@ -54,6 +53,7 @@
 		71FD37D7206AD6BE0042812D /* ArchiveFileEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FD37D6206AD6BE0042812D /* ArchiveFileEntry.swift */; };
 		71FD37D9206AD72C0042812D /* DeviceSupportFileEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FD37D8206AD72C0042812D /* DeviceSupportFileEntry.swift */; };
 		71FD37DD206AD76D0042812D /* DerivedDataFileEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FD37DC206AD76D0042812D /* DerivedDataFileEntry.swift */; };
+		7ADFA2E2262028FE002D8A9A /* CocoaPodsFileEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADFA2E1262028FE002D8A9A /* CocoaPodsFileEntry.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,7 +83,6 @@
 		7162E12A209901FB00081E4E /* PreferencesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 		7162E12C209905BC00081E4E /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		7164260420ACE2EC00D47EF2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		7164260B20B8903000D47EF2 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		716667CF221A26BA004D4FC4 /* FileManager+HomeFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FileManager+HomeFolder.swift"; sourceTree = "<group>"; };
 		717A9F1A22DBAF9300682A0A /* OldDocumentationFileEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OldDocumentationFileEntry.swift; sourceTree = "<group>"; };
 		717AB6B520C71F4D0096743C /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
@@ -109,6 +108,7 @@
 		71FD37D6206AD6BE0042812D /* ArchiveFileEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveFileEntry.swift; sourceTree = "<group>"; };
 		71FD37D8206AD72C0042812D /* DeviceSupportFileEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceSupportFileEntry.swift; sourceTree = "<group>"; };
 		71FD37DC206AD76D0042812D /* DerivedDataFileEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DerivedDataFileEntry.swift; sourceTree = "<group>"; };
+		7ADFA2E1262028FE002D8A9A /* CocoaPodsFileEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CocoaPodsFileEntry.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,7 +117,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				71AE37F1237A1FAE009C03BB /* WebKit.framework in Frameworks */,
-				7164260C20B8903000D47EF2 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,7 +222,6 @@
 			isa = PBXGroup;
 			children = (
 				71AE37F0237A1FAE009C03BB /* WebKit.framework */,
-				7164260B20B8903000D47EF2 /* StoreKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -314,6 +312,7 @@
 				714AB65E22DA87FA00A7FBB7 /* DeviceLogsFileEntry.swift */,
 				717A9F1A22DBAF9300682A0A /* OldDocumentationFileEntry.swift */,
 				717FC51625B4DABD00FA93EB /* InterfacePreviewsFileEntry.swift */,
+				7ADFA2E1262028FE002D8A9A /* CocoaPodsFileEntry.swift */,
 			);
 			path = Entries;
 			sourceTree = "<group>";
@@ -430,6 +429,7 @@
 				719B25DC205EF9D7007560C0 /* FileManager+DirectorySize.swift in Sources */,
 				7162E1262097255C00081E4E /* Stack.swift in Sources */,
 				71A21A0E20544CA300B55651 /* XcodeFileEntry.swift in Sources */,
+				7ADFA2E2262028FE002D8A9A /* CocoaPodsFileEntry.swift in Sources */,
 				714AB65F22DA87FA00A7FBB7 /* DeviceLogsFileEntry.swift in Sources */,
 				71012FAC230C928600FDF8ED /* CmdLine.swift in Sources */,
 				71AE37EF23776AFB009C03BB /* FileManager+DateProperties.swift in Sources */,
@@ -599,7 +599,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 3DS5SGYDG6;
+				DEVELOPMENT_TEAM = LK67A9XFJ9;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/DevCleaner/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -619,7 +619,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 3DS5SGYDG6;
+				DEVELOPMENT_TEAM = LK67A9XFJ9;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/DevCleaner/Resources/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";

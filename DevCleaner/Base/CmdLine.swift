@@ -216,7 +216,9 @@ public final class CmdLine {
     
     private func start(mode: Mode, locations: [XcodeFiles.Location]) {
         guard let developerLibraryFolder = Files.acquireUserDeveloperFolderPermissions(),
+              let cacheLibraryFolder = Files.acquireUserCacheFolderPermission(),
               let xcodeFiles = XcodeFiles(developerFolder: developerLibraryFolder,
+                                          userCacheFolderUrl: cacheLibraryFolder,
                                           customDerivedDataFolder: Files.acquireCustomDerivedDataFolderPermissions(),
                                           customArchivesFolder: Files.acquireCustomArchivesFolderPermissions()) else {
             printErrorAndExit(errorMessage: "Cannot locate Xcode cache files, or can't get access to ~/Library/Developer folder.\nCheck if you have Xcode installed and some projects built. Also, in the next run check if you selected proper folder.")

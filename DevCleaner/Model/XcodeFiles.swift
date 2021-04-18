@@ -39,11 +39,12 @@ public protocol XcodeFilesDeleteDelegate: class {
 final public class XcodeFiles {
     // MARK: Types
     public enum Location: Int, CaseIterable {
-        case deviceSupport, archives, derivedData, previews, logs, oldDocumentation
+        case deviceSupport, archives, derivedData, previews, logs, oldDocumentation, cocoaPods, mboxRepo
     }
     
     // MARK: Properties
     private var userDeveloperFolderUrl: URL
+    private var userCacheFolderUrl: URL
     private var customDerivedDataFolderUrl: URL?
     private var customArchivesFolderUrl: URL?
     
@@ -65,8 +66,9 @@ final public class XcodeFiles {
     }
     
     // MARK: Initialization
-    public init?(developerFolder: URL, customDerivedDataFolder: URL?, customArchivesFolder: URL?) {
+    public init?(developerFolder: URL, userCacheFolderUrl: URL, customDerivedDataFolder: URL?, customArchivesFolder: URL?) {
         self.userDeveloperFolderUrl = developerFolder
+        self.userCacheFolderUrl = userCacheFolderUrl
         self.customDerivedDataFolderUrl = customDerivedDataFolder
         self.customArchivesFolderUrl = customArchivesFolder
         
@@ -85,7 +87,8 @@ final public class XcodeFiles {
             .derivedData: XcodeFileEntry(label: "Derived Data", tooltipText: "Cached projects data & symbol index", tooltip: true, selected: false),
             .previews: XcodeFileEntry(label: "UI Previews", tooltipText: "Cache for user interface previews", tooltip: true, selected: false),
             .logs: XcodeFileEntry(label: "Old Simulator & Device Logs", tooltipText: "Old device logs & crashes databases, only most recent ones are usually needed as they are copies of previous ones.", tooltip: true, selected: true),
-            .oldDocumentation: OldDocumentationFileEntry(selected: false)
+            .oldDocumentation: OldDocumentationFileEntry(selected: false),
+            .cocoaPods: XcodeFileEntry(label: "CocoaPods Cache", extraInfo: "", tooltipText: "", icon: nil, tooltip: false, selected: false)
         ]
     }
     
@@ -407,6 +410,12 @@ final public class XcodeFiles {
             // different for those, as we don't have an option to select separate entries here
             case .oldDocumentation:
                 entry.addPaths(paths: self.scanOldDocumentationLocations())
+                
+            case .cocoaPods:
+                entry.addChildren(items: self.scanCocoaPodsLocations())
+                
+            case .mboxRepo:
+                break
         }
         
         // check for those files sizes
@@ -555,22 +564,22 @@ final public class XcodeFiles {
         
         // scan for derived data projects
         var results: [XcodeFileEntry] = []
-        for derivedDataLocation in derivedDataLocations {
-            if let projectsFolders = try? FileManager.default.contentsOfDirectory(at: derivedDataLocation, includingPropertiesForKeys: nil) {
-                for projectFolder in projectsFolders {
-                    // ignore "ModuleCache" folder
-                    if projectFolder.lastPathComponent == "ModuleCache" {
-                        continue
-                    }
-                    
-                    if let projectEntry = self.derivedDataEntry(from: projectFolder) {
-                        projectEntry.addPath(path: projectFolder)
-                        
-                        results.append(projectEntry)
-                    }
-                }
-            }
-        }
+//        for derivedDataLocation in derivedDataLocations {
+//            if let projectsFolders = try? FileManager.default.contentsOfDirectory(at: derivedDataLocation, includingPropertiesForKeys: nil) {
+//                for projectFolder in projectsFolders {
+//                    // ignore "ModuleCache" folder
+//                    if projectFolder.lastPathComponent == "ModuleCache" {
+//                        continue
+//                    }
+//                    
+//                    if let projectEntry = self.derivedDataEntry(from: projectFolder) {
+//                        projectEntry.addPath(path: projectFolder)
+//                        
+//                        results.append(projectEntry)
+//                    }
+//                }
+//            }
+//        }
         
         return results
     }
@@ -682,6 +691,33 @@ final public class XcodeFiles {
         let docsLocation = self.userDeveloperFolderUrl.appendingPathComponent("Shared/Documentation")
         
         return [docsLocation]
+    }
+    
+    private func scanCocoaPodsLocations() -> [XcodeFileEntry] {
+        var cocoaPodsLocations = [URL]()
+        let cacheDir = self.userCacheFolderUrl
+        let podsDir = cacheDir.appendingPathComponent("CocoaPods/")
+        cocoaPodsLocations.append(podsDir.appendingPathComponent("Pods/Release"))
+        cocoaPodsLocations.append(podsDir.appendingPathComponent("Pods/External"))
+        cocoaPodsLocations.append(podsDir.appendingPathComponent("Pods/v1/Pods/Release"))
+        cocoaPodsLocations.append(podsDir.appendingPathComponent("Pods/v1/Pods/External"))
+        cocoaPodsLocations.append(podsDir.appendingPathComponent("Pods/v1/Support_V1/Pods/Release"))
+        cocoaPodsLocations.append(podsDir.appendingPathComponent("Pods/v1/Support_V1/Pods/External"))
+        
+        
+        var results:[XcodeFileEntry] = []
+        for cocoaLocation in cocoaPodsLocations {
+            if let podFolders = try? FileManager.default.contentsOfDirectory(at: cocoaLocation, includingPropertiesForKeys: nil, options: .includesDirectoriesPostOrder) {
+                for podFolder in podFolders {
+                    let podEntry = CocoaPodsFileEntry(label: podFolder.absoluteString, selected: false)
+                    results.append(podEntry)
+                    
+                    Logger(name: "Add entry:".appending(podFolder.path))
+                }
+            }
+        }
+        
+        return results
     }
     
     // MARK: Deleting files

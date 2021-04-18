@@ -29,8 +29,15 @@ public final class Files {
         return userDeveloperFolder
     }
     
+    public static var userCacheFolder: URL {
+        let userHomeDirectory = FileManager.default.realHomeDirectoryForCurrentUser
+        let userCacheFolder = userHomeDirectory.appendingPathComponent("Library/Caches", isDirectory: true)
+        
+        return userCacheFolder
+    }
+    
     // MARK: Acquire folder permissions
-    private static func acquireFolderPermissions(folderUrl: URL, allowCancel: Bool = true, openPanelMessage: String? = nil) -> URL? {
+    public static func acquireFolderPermissions(folderUrl: URL, allowCancel: Bool = true, openPanelMessage: String? = nil) -> URL? {
         let message = openPanelMessage ??
                       "DevCleaner needs permission to this folder to scan its contents. Folder should be already selected and all you need to do is to click \"Open\"."
         
@@ -41,6 +48,12 @@ public final class Files {
     
     public static func acquireUserDeveloperFolderPermissions() -> URL? {
         return acquireFolderPermissions(folderUrl: Files.userDeveloperFolder,
+                                        openPanelMessage: "DevCleaner needs permission to your Developer folder to scan Xcode cache files. Folder should be already selected and all you need to do is to click \"Open\".")
+    }
+    
+    public static func acquireUserCacheFolderPermission() -> URL? {
+        return acquireFolderPermissions(folderUrl: Files.userCacheFolder,
+                                        allowCancel: true,
                                         openPanelMessage: "DevCleaner needs permission to your Developer folder to scan Xcode cache files. Folder should be already selected and all you need to do is to click \"Open\".")
     }
     

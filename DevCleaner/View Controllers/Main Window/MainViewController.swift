@@ -176,7 +176,9 @@ final class MainViewController: NSViewController {
         
         // open ~/Library/Developer folder & create XcodeFiles instance
         if let developerLibraryFolder = Files.acquireUserDeveloperFolderPermissions(),
+           let cacheLibraryFolder = Files.acquireUserCacheFolderPermission(),
            let xcodeFiles = XcodeFiles(developerFolder: developerLibraryFolder,
+                                       userCacheFolderUrl: cacheLibraryFolder,
                                        customDerivedDataFolder: Files.acquireCustomDerivedDataFolderPermissions(),
                                        customArchivesFolder: Files.acquireCustomArchivesFolderPermissions()) {
             xcodeFiles.scanDelegate = self
