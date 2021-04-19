@@ -564,22 +564,22 @@ final public class XcodeFiles {
         
         // scan for derived data projects
         var results: [XcodeFileEntry] = []
-//        for derivedDataLocation in derivedDataLocations {
-//            if let projectsFolders = try? FileManager.default.contentsOfDirectory(at: derivedDataLocation, includingPropertiesForKeys: nil) {
-//                for projectFolder in projectsFolders {
-//                    // ignore "ModuleCache" folder
-//                    if projectFolder.lastPathComponent == "ModuleCache" {
-//                        continue
-//                    }
-//                    
-//                    if let projectEntry = self.derivedDataEntry(from: projectFolder) {
-//                        projectEntry.addPath(path: projectFolder)
-//                        
-//                        results.append(projectEntry)
-//                    }
-//                }
-//            }
-//        }
+        for derivedDataLocation in derivedDataLocations {
+            if let projectsFolders = try? FileManager.default.contentsOfDirectory(at: derivedDataLocation, includingPropertiesForKeys: nil) {
+                for projectFolder in projectsFolders {
+                    // ignore "ModuleCache" folder
+                    if projectFolder.lastPathComponent == "ModuleCache" {
+                        continue
+                    }
+                    
+                    if let projectEntry = self.derivedDataEntry(from: projectFolder) {
+                        projectEntry.addPath(path: projectFolder)
+                        
+                        results.append(projectEntry)
+                    }
+                }
+            }
+        }
         
         return results
     }
@@ -697,19 +697,36 @@ final public class XcodeFiles {
         var cocoaPodsLocations = [URL]()
         let cacheDir = self.userCacheFolderUrl
         let podsDir = cacheDir.appendingPathComponent("CocoaPods/")
+        
+        var depth = 0
+        for cocoaLocation in cocoaPodsLocations {
+            if let podFolders = try? FileManager.default.contentsOfDirectory(at: cocoaLocation, includingPropertiesForKeys: nil, options: .includesDirectoriesPostOrder) {
+                for podFolder in podFolders {
+                    
+                }
+            }
+        }
+        
+        
         cocoaPodsLocations.append(podsDir.appendingPathComponent("Pods/Release"))
         cocoaPodsLocations.append(podsDir.appendingPathComponent("Pods/External"))
-        cocoaPodsLocations.append(podsDir.appendingPathComponent("Pods/v1/Pods/Release"))
-        cocoaPodsLocations.append(podsDir.appendingPathComponent("Pods/v1/Pods/External"))
-        cocoaPodsLocations.append(podsDir.appendingPathComponent("Pods/v1/Support_V1/Pods/Release"))
-        cocoaPodsLocations.append(podsDir.appendingPathComponent("Pods/v1/Support_V1/Pods/External"))
+        cocoaPodsLocations.append(podsDir.appendingPathComponent("v1/Pods/Release"))
+        cocoaPodsLocations.append(podsDir.appendingPathComponent("v1/Pods/External"))
+        cocoaPodsLocations.append(podsDir.appendingPathComponent("v1/Support_V1/Pods/Release"))
+        cocoaPodsLocations.append(podsDir.appendingPathComponent("v1/Support_V1/Pods/External"))
         
         
         var results:[XcodeFileEntry] = []
         for cocoaLocation in cocoaPodsLocations {
             if let podFolders = try? FileManager.default.contentsOfDirectory(at: cocoaLocation, includingPropertiesForKeys: nil, options: .includesDirectoriesPostOrder) {
                 for podFolder in podFolders {
-                    let podEntry = CocoaPodsFileEntry(label: podFolder.absoluteString, selected: false)
+                    if podFolder.lastPathComponent.hasPrefix(".") {
+                        continue
+                    }
+                    let relativePath = podFolder.path.replacingOccurrences(of: podsDir.path, with: "")
+                    
+                    let podEntry = CocoaPodsFileEntry(label: podFolder.lastPathComponent.appendingFormat("\t\t(%@)", relativePath), tooltipText: podFolder.path, tooltip: true, selected: false)
+                    podEntry.addPath(path: podFolder)
                     results.append(podEntry)
                     
                     Logger(name: "Add entry:".appending(podFolder.path))

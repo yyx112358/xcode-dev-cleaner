@@ -176,6 +176,8 @@ open class XcodeFileEntry: NSObject {
     public func recalculateSize() -> Size? {
         var result: Int64 = 0
         
+        print("recalculateSize :\(self.debugRepresentation())")
+        
         // calculate sizes of children
         for item in self.items {
             if let size = item.recalculateSize(), let sizeInBytes = size.numberOfBytes {
